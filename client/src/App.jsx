@@ -5,11 +5,20 @@ import Layout from "./pages/Layout.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import WriteArticle from "./pages/WriteArticle.jsx";
 import BlogTitle from "./pages/BlogTitle.jsx";
+import Login from "./pages/Auth/Login.jsx";
+import Register from "./pages/Auth/Register.jsx";
+import ForgetPassword from "./pages/Auth/ForgetPassword.jsx";
+import VerifyOtp from "./pages/Auth/VerifyOtp.jsx";
 const App = () => {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
 
         {/* AI parent route */}
         <Route path="/ai" element={<Layout />}>
