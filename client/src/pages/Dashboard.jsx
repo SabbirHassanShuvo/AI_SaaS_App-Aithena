@@ -17,15 +17,35 @@ import {
   ChevronDown,
   Search,
   MoreVertical,
+  X,
+  Shield,
+  CreditCard,
+  Settings,
+  Mail,
+  Lock,
+  Plus,
+  Edit2,
+  Check,
 } from "lucide-react";
-
+import { FaGoogle } from "react-icons/fa";
 const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [user] = useState({
+  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [accountActiveTab, setAccountActiveTab] = useState("profile");
+
+  const user = {
     name: "William Mark",
     avatar: "https://placehold.co/80x80/6366f1/ffffff?text=WM",
     plan: "Premium",
-  });
+    email: "user.greatstack@gmail.com",
+    connectedAccounts: ["Google"],
+    subscription: {
+      type: "Premium",
+      price: "$16 / month",
+      renewal: "Renews Aug 3",
+    },
+    paymentMethods: [{ type: "Visa", last4: "4242", default: true }],
+  };
 
   const stats = [
     {
@@ -93,6 +113,381 @@ const UserDashboard = () => {
     },
   ];
 
+  const AccountModal = () => {
+    return (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-fadeIn">
+          {/* Header */}
+          <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Account</h2>
+              <p className="text-sm text-gray-500">Manage your account info.</p>
+            </div>
+            <button
+              onClick={() => setShowAccountModal(false)}
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="flex">
+            {/* Sidebar */}
+            <div className="w-64 border-r border-gray-200 p-6">
+              <div className="space-y-2">
+                <button
+                  onClick={() => setAccountActiveTab("profile")}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    accountActiveTab === "profile"
+                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}>
+                  <User className="w-4 h-4" />
+                  Profile
+                </button>
+                <button
+                  onClick={() => setAccountActiveTab("security")}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    accountActiveTab === "security"
+                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}>
+                  <Shield className="w-4 h-4" />
+                  Security
+                </button>
+                <button
+                  onClick={() => setAccountActiveTab("billing")}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    accountActiveTab === "billing"
+                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}>
+                  <CreditCard className="w-4 h-4" />
+                  Billing
+                </button>
+                <button
+                  onClick={() => setAccountActiveTab("settings")}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    accountActiveTab === "settings"
+                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}>
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </button>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-gray-200">
+                <div className="text-xs text-gray-500">Secured by Clerk</div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 p-6">
+              {accountActiveTab === "profile" && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-gray-900">
+                      Profile details
+                    </h3>
+                    <button className="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                      Update profile
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* Profile Section */}
+                    <div className="border-b border-gray-200 pb-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                          <User className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">
+                            {user.name}
+                          </h4>
+                          <p className="text-sm text-gray-500">Great Stack</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Email Addresses */}
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900">
+                        Email addresses
+                      </h4>
+                      <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <Mail className="w-4 h-4 text-gray-400" />
+                          <span className="text-gray-900">{user.email}</span>
+                          <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                            Primary
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button className="p-1 text-gray-400 hover:text-gray-600">
+                            <MoreVertical className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <button className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700">
+                        <Plus className="w-4 h-4" />
+                        Add email address
+                      </button>
+                    </div>
+
+                    {/* Connected Accounts */}
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900">
+                        Connected accounts
+                      </h4>
+                      <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <FaGoogle className="w-4 h-4 text-red-500" />
+                          <span className="text-gray-900">
+                            Google • {user.email}
+                          </span>
+                        </div>
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <MoreVertical className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {accountActiveTab === "security" && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Security settings
+                  </h3>
+
+                  <div className="space-y-6">
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Lock className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Password
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          Change password
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Last changed on June 1, 2025
+                      </p>
+                    </div>
+
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Shield className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Two-factor authentication
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          Set up 2FA
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Add an extra layer of security to your account
+                      </p>
+                    </div>
+
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Session management
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          View sessions
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Manage active sessions and log out from other devices
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {accountActiveTab === "billing" && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-gray-900">Billing</h3>
+                  </div>
+
+                  <div className="border-b border-gray-200 pb-6">
+                    <div className="flex space-x-6 mb-4">
+                      <button className="px-4 py-2 font-medium text-gray-900 border-b-2 border-indigo-500">
+                        Subscription
+                      </button>
+                      <button className="px-4 py-2 font-medium text-gray-500 hover:text-gray-700">
+                        Statements
+                      </button>
+                      <button className="px-4 py-2 font-medium text-gray-500 hover:text-gray-700">
+                        Payments
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* Subscription */}
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium text-gray-900">
+                          Subscription
+                        </h4>
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <MoreVertical className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                            <Zap className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-900">
+                              {user.subscription.type}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {user.subscription.renewal}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-lg font-bold text-gray-900">
+                          {user.subscription.price}
+                        </div>
+                      </div>
+
+                      <div className="mt-4 flex items-center gap-3">
+                        <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                          Switch plans
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Payment Methods */}
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium text-gray-900">
+                          Payment methods
+                        </h4>
+                        <button className="p-1 text-gray-400 hover:text-gray-600">
+                          <MoreVertical className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="space-y-3">
+                        {user.paymentMethods.map((method, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <CreditCard className="w-4 h-4 text-gray-500" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-gray-900">
+                                  {method.type} • {method.last4}
+                                </div>
+                                {method.default && (
+                                  <span className="text-xs text-gray-500">
+                                    Default
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <button className="p-1 text-gray-400 hover:text-gray-600">
+                              <MoreVertical className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+
+                        <button className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700">
+                          <Plus className="w-4 h-4" />
+                          Add new payment method
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {accountActiveTab === "settings" && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-bold text-gray-900">Settings</h3>
+
+                  <div className="space-y-6">
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Settings className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Notification preferences
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          Manage notifications
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Choose how you want to be notified about updates and
+                        activity
+                      </p>
+                    </div>
+
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Edit2 className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Appearance
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          Customize theme
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Change the look and feel of your dashboard
+                      </p>
+                    </div>
+
+                    <div className="p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <Check className="w-5 h-5 text-gray-400" />
+                          <h4 className="font-medium text-gray-900">
+                            Data & privacy
+                          </h4>
+                        </div>
+                        <button className="px-3 py-1 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-200">
+                          Manage data
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Control what data is collected and how it's used
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
@@ -110,7 +505,9 @@ const UserDashboard = () => {
           </div>
 
           {/* User Profile */}
-          <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-all duration-200">
+          <div
+            className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-all duration-200"
+            onClick={() => setShowAccountModal(true)}>
             <img
               src={user.avatar}
               alt="User"
@@ -276,6 +673,9 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Account Modal */}
+      {showAccountModal && <AccountModal />}
     </div>
   );
 };
