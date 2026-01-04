@@ -9,6 +9,7 @@ import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
 import ForgetPassword from "./pages/Auth/ForgetPassword.jsx";
 import VerifyOtp from "./pages/Auth/VerifyOtp.jsx";
+import RemoveBackground from "./pages/RemoveBackground.jsx";
 const App = () => {
   return (
     <div>
@@ -25,6 +26,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="write-article" element={<WriteArticle />} />
           <Route path="blog-title" element={<BlogTitle />} />
+          <Route path="remove-background" element={<RemoveBackground />} />
         </Route>
       </Routes>
     </div>
